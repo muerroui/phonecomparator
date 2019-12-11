@@ -1,0 +1,170 @@
+<!-- Bootstrap core JavaScript -->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Plugin JavaScript -->
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
+
+<!-- Contact Form JavaScript -->
+<script src="js/jqBootstrapValidation.js"></script>
+<script src="js/contact_me.js"></script>
+
+<!-- Custom scripts for this template -->
+<script src="js/phonecomparator.min.js"></script>
+
+<!-- Tools function -->
+<script src="js/tools.js"></script>
+
+<!-- Main script -->
+<script>
+    function init(config) {
+        $("select.brand").attr("disabled", "true");
+        $("select.device").attr("disabled", "true");
+        initBrands(config.api);
+        handleDBrandOnChange(config.api);
+        handleDeviceOnChange(config.api);
+        handleCompareButton();
+        $("#infoModal").click(function () {
+            $("#infoModal").hide();
+        });
+    }
+
+    function initBrands(api) {
+        $.ajax({
+            url: api + "/brands",
+            timeout: 3000,
+            success: function (brands) {
+                brands.forEach(function (brand) {
+                    $("#brandOne").append(
+                        new Option(decodeEntities(brand.name), brand.url)
+                    );
+                    $("#brandTwo").append(
+                        new Option(decodeEntities(brand.name), brand.url)
+                    );
+                    $("#brandTree").append(
+                        new Option(decodeEntities(brand.name), brand.url)
+                    );
+                });
+                $("div.brandLoad").remove();
+                $("select.brand").removeAttr("disabled");
+            },
+            error: function (e) {
+                console.log('error', e);
+                displayModal("Not connected.\nPlease verify \
+                your network connection or retry your select..");
+                $("div.brandLoad").remove();
+            }
+        });
+    }
+
+    function handleDBrandOnChange(api) {
+        $(".brand").on("change", function (e) {
+            var brandSelect = $(this);
+            var devicesSelect = brandSelect.parent().find(".device");
+            devicesSelect
+                .find("option")
+                .not(":first")
+                .remove();
+            devicesSelect.attr("disabled", "true");
+            devicesSelect.trigger("change");
+            if (brandSelect.val() == "") {
+                return;
+            }
+            var devicesLabel = brandSelect.parent().find("label").first();
+            var deviceLoad = $(
+                '<div class="spinner-border spinner-border-sm deviceLoad" role="status">' +
+                '<span class="sr-only">Loading...</span></div>'
+            ).insertAfter(devicesLabel);
+            $.ajax({
+                url: api + "/brand/" + brandSelect.val(),
+                timeout: 5000,
+                success: function (devices) {
+                    devices.data.forEach(function (device) {
+                        devicesSelect.append(
+                            new Option(decodeEntities(device.name), device.url)
+                        );
+                    });
+                    deviceLoad.remove();
+                    devicesSelect.removeAttr("disabled");
+                },
+                error: function (e) {
+                    if (e.responseText !== undefined && e.responseText.includes("page not found")) {
+                        displayModal("Could not find devices of <u> \ " +
+                            brandSelect.find("option:selected").text() +
+                            "</u> brand");
+                    } else {
+                        displayModal("Not connected.\nPlease verify \
+                your network connection or retry your select...");
+                    }
+                    deviceLoad.remove();
+                    brandSelect.val("");
+                }
+            });
+        });
+    }
+
+    function handleDeviceOnChange(api) {
+        $(".device").on("change", function (e) {
+            var deviceSelect = $(this);
+            var deviceImg = deviceSelect
+                .closest(".form-group")
+                .find(".imgDevice")
+                .first();
+            if ($(this).val() == "") {
+                if (!deviceImg.attr("src").includes("img/device.png")) {
+                    deviceImg.attr("src", "img/device.png");
+                }
+                return;
+            }
+            deviceImg.attr("src", "img/loadingDevice.gif");
+            $.ajax({
+                url: api + "/phone/" + $(this).val(),
+                timeout: 5000,
+                success: function (device) {
+                    if (device.img) {
+                        deviceImg.attr("src", device.img);
+                    } else {
+                        deviceImg.attr("src", "img/device.png");
+                    }
+                },
+                error: function (error) {
+                    console.log('error', e);
+                    if (error.status === 404) {
+                        displayModal("Not found.\n This device doesn't exist in our database \
+                Please choose another ...");
+                    }
+                    else {
+                        displayModal("Not connected.\nPlease verify \
+                your network connection or retry your select...");
+                    }
+                    deviceImg.attr("src", "img/device.png");
+                    deviceSelect.val("");
+                    return;
+                }
+            });
+        });
+    }
+
+    function handleCompareButton() {
+        $("#CompareButton").click(function () {
+            const devices = $(".device").map(function (_, device) {
+                return $(device).val();
+            }).get().filter(Boolean);
+            if (devices.length < 2) {
+                displayModal("Please select at least two Devices ...");
+            }
+            else {
+                let paramsStr = "";
+                for (let [index, device] of devices.entries()) {
+                    paramsStr += "phone" + (index + 1) + "=" + devices[index] + (index !== devices.length - 1 ? "&" : "");
+                }
+                window.location.href = "compare.html?" + paramsStr.replace(/.php/g, '');
+            }
+        });
+    }
+
+    $.get('./config/prod.json', function (config) {
+        init(config);
+    });
+</script>

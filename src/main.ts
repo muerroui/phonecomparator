@@ -1,6 +1,7 @@
 
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import exphbs = require('express-handlebars');
 import { join } from 'path';
 import { AppModule } from './app.module';
 
@@ -9,9 +10,17 @@ async function bootstrap() {
     AppModule,
   );
 
+  app.engine( 'hbs', exphbs( {
+    extname: 'hbs',
+    defaultLayout: 'main',
+    layoutsDir: join(__dirname, '..', '/views/layouts/'),
+    partialsDir:  join(__dirname, '..', '/views/partials/'),
+    BaseViewsDir: join(__dirname, '..', 'views')
+  } ) );
+
   app.useStaticAssets(join(__dirname, '..', 'public'));
-  app.setBaseViewsDir(join(__dirname, '..', 'views'));
-  app.setViewEngine('hbs');
+
+  app.set( 'view engine', 'hbs' );
 
   await app.listen(3000);
 }
