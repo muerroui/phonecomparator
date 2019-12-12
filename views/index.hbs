@@ -364,7 +364,7 @@
 
       function initBrands(api) {
         $.ajax({
-          url: api + "/brands",
+          url: "/brands",
           timeout: 3000,
           success: function(brands) {
             brands.forEach(function(brand) {
@@ -409,7 +409,7 @@
               '<span class="sr-only">Loading...</span></div>'
           ).insertAfter(devicesLabel);
           $.ajax({
-            url: api + "/phone?brand=" + brandSelect.val(),
+            url: "/phone?brand=" + brandSelect.val(),
             timeout: 5000,
             success: function(devices) {
               console.log('devices', devices);
@@ -453,7 +453,7 @@
           }
           deviceImg.attr("src", "img/loadingDevice.gif");
           $.ajax({
-            url: api + "/phone/" + $(this).val(),
+            url: "/phone/" + $(this).val(),
             timeout: 5000,
             success: function(device) {
               if (device.img) {
