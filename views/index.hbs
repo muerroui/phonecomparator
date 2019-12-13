@@ -43,16 +43,6 @@
                 >Contact us</a
               >
             </li>
-            <li class="nav-item mx-0 mx-lg-1 dropdown">
-                <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"> Event
-                </a>
-                <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(15px, 37px, 0px);">
-                    <a class="dropdown-item" href="pages/event/committees.html"><b>Committees</b></a>
-                    <a class="dropdown-item" href="pages/event/keynotes.html">Keynotes</a>
-                    <a class="dropdown-item" href="pages/event/tutorials.html">Tutorials</a>
-                    <a class="dropdown-item" href="pages/event/Awards.html">Awards</a>
-                </div>
-            </li>
           </ul>
         </div>
       </div>
@@ -88,18 +78,17 @@
                   class="card-img-bottom mx-auto d-block imgDevice"
                   src="img/device.png"
                   alt="Phone one comparison"
-                  style="width: 150px;height: 200px"
                 />
               </div>
               <label>Select the Brand:</label>
-              <select class="form-control brand" id="brandOne">
+              <select class="form-control selectpicker brand" id="brandOne">
                 <option value="" selected="selected">--Brand-- </option>
                 {{#each brands}}
                   <option value="{{this.url}}">{{this.name}}</option>
                 {{/each}}
               </select>
               <label>Select the Device:</label>
-              <select class="form-control device" id="deviceOne">
+              <select class="form-control selectpicker device" id="deviceOne">
                 <option value="" selected="selected">--Device--</option>
               </select>
             </div>
@@ -115,18 +104,17 @@
                   class="card-img-bottom mx-auto d-block imgDevice"
                   src="img/device.png"
                   alt="Phone two comparison"
-                  style="width: 150px;height: 200px"
                 />
               </div>
               <label>Select the Brand:</label>
-              <select class="form-control brand" id="brandTwo">
+              <select class="form-control selectpicker brand" id="brandTwo">
                 <option value="" selected="selected">--Brand--</option>
                 {{#each brands}}
                   <option value="{{this.url}}">{{this.name}}</option>
                 {{/each}}
               </select>
               <label>Select the Device:</label>
-              <select class="form-control device" id="deviceTwo">
+              <select class="form-control selectpicker device" id="deviceTwo">
                 <option value="" selected="selected">--Device--</option>
               </select>
             </div>
@@ -142,18 +130,17 @@
                   class="card-img-bottom mx-auto d-block imgDevice"
                   src="img/device.png"
                   alt="Phone tree comparison"
-                  style="width: 150px;height: 200px"
                 />
               </div>
               <label>Select the Brand:</label>
-              <select class="form-control brand" id="brandTree">
+              <select class="form-control selectpicker brand" id="brandTree">
                 <option value="" selected="selected">--Brand--</option>
                 {{#each brands}}
                   <option value="{{this.url}}">{{this.name}}</option>
                 {{/each}}
               </select>
               <label>Select the Device:</label>
-              <select class="form-control device" id="deviceTree">
+              <select class="form-control selectpicker device" id="deviceTree">
                 <option value="" selected="selected">--Device--</option>
               </select>
             </div>
@@ -174,22 +161,6 @@
     <section class="bg-primary text-white mb-0" id="about">
       <div class="container">
         <h2 class="text-center text-uppercase text-white">About</h2>
-        <hr class="star-light mb-5" />
-        <div class="row">
-          <div class="col-lg-12">
-            <p class="lead text-justify">
-              Phone Comparator gives you the ability to quickly and easily find
-              the phone you want through our device comparator and buy it from
-              the most popular e-commerce sites ( Amazon, AliExpress, ... ).
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Blog Section -->
-    <section class="bg-primary text-white mb-0" id="blog">
-        <h2 class="text-center text-uppercase text-white">Blog</h2>
         <hr class="star-light mb-5" />
         <div class="row">
           <div class="col-lg-12">
@@ -332,12 +303,14 @@
       </a>
     </div>
     <!-- Bootstrap core JavaScript -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery/jquery.min.js"></script>
+    <script src="js/bootstrap/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap select JavaScript -->
+    <script src="js/bootstrap/bootstrap-select.min.js"></script>
 
     <!-- Plugin JavaScript -->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-    <script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
+    <script src="js/jquery-easing/jquery.easing.min.js"></script>
+    <script src="js/magnific-popup/jquery.magnific-popup.min.js"></script>
 
     <!-- Contact Form JavaScript -->
     <script src="js/jqBootstrapValidation.js"></script>
@@ -353,6 +326,7 @@
     <script>
       function init(config) {
         $("select.device").attr("disabled", "true");
+        $(".selectpicker").val('').selectpicker('refresh');
         // initBrands(config.api);
         handleDBrandOnChange(config.api);
         handleDeviceOnChange(config.api);
@@ -393,7 +367,12 @@
       function handleDBrandOnChange(api) {
         $(".brand").on("change", function(e) {
           var brandSelect = $(this);
-          var devicesSelect = brandSelect.parent().find(".device");
+          var devicesSelect = brandSelect.parent().parent().find(".selectpicker.device");
+           var deviceImg = devicesSelect
+            .closest(".form-group")
+            .find(".imgDevice")
+            .first();
+          deviceImg.attr("src", "img/device.png");
           devicesSelect
             .find("option")
             .not(":first")
@@ -403,7 +382,7 @@
           if (brandSelect.val() == "") {
             return;
           }
-          var devicesLabel = brandSelect.parent().find("label").first();
+          var devicesLabel = brandSelect.parent().parent().find("label").first();
           var deviceLoad = $(
             '<div class="spinner-border spinner-border-sm deviceLoad" role="status">' +
               '<span class="sr-only">Loading...</span></div>'
@@ -412,15 +391,13 @@
             url: "/phone?brand=" + brandSelect.val(),
             timeout: 5000,
             success: function(devices) {
-              console.log('devices', devices);
+              var options = ["<option value='' selected='selected'>--Device--</option>"];
               devices.forEach(function(device) {
-                console.log('hello devices');
-                devicesSelect.append(
-                  new Option(decodeEntities(device.name), device.url)
-                );
+                  options.push("<option value='" + device.url + "'>" + device.name + "</option>");
               });
+              devicesSelect.html(options).removeAttr("disabled");
+              devicesSelect.selectpicker('refresh');
               deviceLoad.remove();
-              devicesSelect.removeAttr("disabled");
             },
             error: function(e) {
               if (e.responseText !== undefined && e.responseText.includes("page not found")) {
@@ -446,9 +423,6 @@
             .find(".imgDevice")
             .first();
           if ($(this).val() == "") {
-            if (!deviceImg.attr("src").includes("img/device.png")) {
-              deviceImg.attr("src", "img/device.png");
-            }
             return;
           }
           deviceImg.attr("src", "img/loadingDevice.gif");
@@ -497,7 +471,6 @@
           }
         });
       }
-
       $.get('./config/prod.json', function(config) {
         init(config);
       });

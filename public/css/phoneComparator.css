@@ -401,6 +401,11 @@ a:focus, a:hover, a:active {
   border-color: #1a252f;
 }
 
+.imgDevice {
+  width: 150px;
+  height: 200px
+}
+
 .btn-amazon {
   background: linear-gradient(to bottom, #f5d78e, #eeb933) repeat scroll 0 0 rgba(0,0,0,0);
   color: #1a252f !important;
@@ -415,6 +420,15 @@ a:focus, a:hover, a:active {
   max-width: 150px;
   width: 100%;
   height: auto;
+}
+
+.bootstrap-select {
+  color: #FFF;
+}
+
+.bootstrap-select .btn {
+  border-style: solid;
+  border-color: #2C3E50 !important;
 }
 
 .comparison {
