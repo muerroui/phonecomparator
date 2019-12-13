@@ -324,47 +324,18 @@
 
     <!-- Main script -->
     <script>
-      function init(config) {
+      function init() {
         $("select.device").attr("disabled", "true");
         $(".selectpicker").val('').selectpicker('refresh');
-        // initBrands(config.api);
-        handleDBrandOnChange(config.api);
-        handleDeviceOnChange(config.api);
+        handleDBrandOnChange();
+        handleDeviceOnChange();
         handleCompareButton();
         $("#infoModal").click(function() {
           $("#infoModal").hide();
         });
       }
 
-      function initBrands(api) {
-        $.ajax({
-          url: "/brands",
-          timeout: 3000,
-          success: function(brands) {
-            brands.forEach(function(brand) {
-              $("#brandOne").append(
-                new Option(decodeEntities(brand.name), brand.url)
-              );
-              $("#brandTwo").append(
-                new Option(decodeEntities(brand.name), brand.url)
-              );
-              $("#brandTree").append(
-                new Option(decodeEntities(brand.name), brand.url)
-              );
-            });
-            $("div.brandLoad").remove();
-            $("select.brand").removeAttr("disabled");
-          },
-          error: function(e) {
-            console.log('error', e);
-            displayModal("Not connected.\nPlease verify \
-                your network connection or retry your select..");
-            $("div.brandLoad").remove();
-          }
-        });
-      }
-
-      function handleDBrandOnChange(api) {
+      function handleDBrandOnChange() {
         $(".brand").on("change", function(e) {
           var brandSelect = $(this);
           var devicesSelect = brandSelect.parent().parent().find(".selectpicker.device");
@@ -415,7 +386,7 @@
         });
       }
 
-      function handleDeviceOnChange(api) {
+      function handleDeviceOnChange() {
         $(".device").on("change", function(e) {
           var deviceSelect = $(this);
           var deviceImg = deviceSelect
@@ -471,7 +442,5 @@
           }
         });
       }
-      $.get('./config/prod.json', function(config) {
-        init(config);
-      });
+      init();
     </script>
