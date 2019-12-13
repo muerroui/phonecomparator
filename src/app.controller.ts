@@ -10,7 +10,7 @@ export class AppController {
   @Get()
   @Render('index')
   async root() {
-    return { brands: []};
+    return { brands: await this.phoneBrands()};
   }
 
   async phoneBrands() {
