@@ -5,6 +5,7 @@ import exphbs = require('express-handlebars');
 import { join } from 'path';
 import { get } from 'lodash';
 import { AppModule } from './app.module';
+import { NotFoundExceptionFilter } from './filters/not-found-exception.filter';
 
 const helpersHds = {
   concat() {
@@ -40,8 +41,7 @@ async function bootstrap() {
 
   app.set('view engine', 'hbs');
 
-  app.use((req, res) =>
-    res.render('404', { Notfooter: true }));
+  // app.useGlobalFilters(new NotFoundExceptionFilter());
 
   await app.listen(3000);
 }
