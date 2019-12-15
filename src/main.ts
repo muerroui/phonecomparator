@@ -40,6 +40,9 @@ async function bootstrap() {
 
   app.set('view engine', 'hbs');
 
+  app.use((req, res) =>
+    res.render('404', { Notfooter: true }));
+
   await app.listen(3000);
 }
 bootstrap();

@@ -1,5 +1,5 @@
 
-import { Get, Controller, Render, Query, Param } from '@nestjs/common';
+import { Get, Controller, Render, Query, Param, NotFoundException, Res } from '@nestjs/common';
 import { PhoneController } from './phone.controller';
 import { AppController } from './app.controller';
 import {gsmarenaMapping} from './constants/gsmarenaMapping.constant';
@@ -11,8 +11,12 @@ export class CompareController {
 
   @Get(':id')
   @Render('compare')
-  async get(@Param('id') compareIds) {
+  async get(@Param('id') compareIds, @Res() res) {
     const phoneIds = compareIds.split('-vs-');
+    if (phoneIds.length < 2) {
+      res.render('404', {Notfooter: true});
+     // throw new NotFoundException(`Number of phones two compare must be at least two`);
+    }
     const phoneController = new PhoneController();
     let phones = [];
     if (phoneIds[0]) {
