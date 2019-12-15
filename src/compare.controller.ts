@@ -6,7 +6,6 @@ import {gsmarenaMapping} from './constants/gsmarenaMapping.constant';
 import { get } from 'lodash';
 
 
-
 @Controller('compare')
 export class CompareController {
 
