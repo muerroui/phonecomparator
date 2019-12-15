@@ -1,5 +1,5 @@
 
-import { Get, Controller, Render, Query } from '@nestjs/common';
+import { Get, Controller, Render, Query, Param } from '@nestjs/common';
 import { PhoneController } from './phone.controller';
 import { AppController } from './app.controller';
 import {gsmarenaMapping} from './constants/gsmarenaMapping.constant';
@@ -9,19 +9,20 @@ import { get } from 'lodash';
 @Controller('compare')
 export class CompareController {
 
-  @Get()
+  @Get(':id')
   @Render('compare')
-  async root(@Query() query) {
+  async get(@Param('id') compareIds) {
+    const phoneIds = compareIds.split('-vs-');
     const phoneController = new PhoneController();
     let phones = [];
-    if (query.phone1) {
-     phones.push(await phoneController.phone(query.phone1 + '.php'));
+    if (phoneIds[0]) {
+     phones.push(await phoneController.phone(phoneIds[0] + '.php'));
     }
-    if (query.phone2) {
-      phones.push(await phoneController.phone(query.phone2 + '.php'));
+    if (phoneIds[1]) {
+      phones.push(await phoneController.phone(phoneIds[1] + '.php'));
     }
-    if (query.phone3) {
-      phones.push(await phoneController.phone(query.phone3 + '.php'));
+    if (phoneIds[2]) {
+      phones.push(await phoneController.phone(phoneIds[2] + '.php'));
     }
     const appController = new AppController();
     if (phones.length === 0) {

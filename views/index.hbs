@@ -475,9 +475,9 @@
           else {
             let paramsStr = "";
             for (let [index, device] of devices.entries()) {
-                paramsStr += "phone" + (index+1) + "=" + devices[index] + (index !== devices.length-1 ? "&" : "");
+                paramsStr += devices[index] + (index !== devices.length-1 ? "-vs-" : "");
             }
-            window.location.href =  "compare?" + paramsStr.replace(/.php/g, '');
+            window.location.href =  "compare/" + paramsStr.replace(/.php/g, '');
           }
         });
       }
