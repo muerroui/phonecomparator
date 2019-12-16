@@ -3,19 +3,18 @@ import { ExceptionFilter, Catch, HttpException, ArgumentsHost, HttpStatus } from
 @Catch()
 export class ErrorFilter implements ExceptionFilter {
   catch(error: Error, host: ArgumentsHost) {
-    let response = host.switchToHttp().getResponse();
-    let status = (error instanceof HttpException) ? error.getStatus(): HttpStatus.INTERNAL_SERVER_ERROR;
+    const response = host.switchToHttp().getResponse();
+    const status = (error instanceof HttpException) ? error.getStatus(): HttpStatus.INTERNAL_SERVER_ERROR;
 
     if (status === HttpStatus.NOT_FOUND) {
-        return response.render('404', {Notfooter: true});
+        return response.render('custom/404', {Notfooter: true});
     }
     if (status === HttpStatus.INTERNAL_SERVER_ERROR) {
         if (process.env.NODE_ENV === 'production') {
-            return response.render('500', {Notfooter: true});
+            return response.render('custom/500', {Notfooter: true});
         }
         else {
-          let message = error.stack;
-          return response.status(status).send(message);
+          return response.status(status).send(error.stack);
         }
     }
   }

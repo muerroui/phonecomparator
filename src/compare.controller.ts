@@ -14,7 +14,7 @@ export class CompareController {
   async get(@Param('id') compareIds, @Res() res) {
     const phoneIds = compareIds.split('-vs-');
     if (phoneIds.length < 2) {
-      res.render('404', {Notfooter: true});
+      res.render('custom/404', {Notfooter: true});
      // throw new NotFoundException(`Number of phones two compare must be at least two`);
     }
     const phoneController = new PhoneController();
