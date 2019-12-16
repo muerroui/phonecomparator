@@ -7,7 +7,7 @@ export class ErrorFilter implements ExceptionFilter {
     const status = (error instanceof HttpException) ? error.getStatus(): HttpStatus.INTERNAL_SERVER_ERROR;
 
     if (status === HttpStatus.NOT_FOUND) {
-        return response.render('custom/404', {Notfooter: true});
+        return response.status(404).render('custom/404', {Notfooter: true});
     }
     if (status === HttpStatus.INTERNAL_SERVER_ERROR) {
         if (process.env.NODE_ENV === 'production') {
