@@ -1,6 +1,6 @@
 import { Controller, Post, Body, Get, Put, Delete,Param} from '@nestjs/common';
 import { PhoneService } from '../service/phone.service';
-import { Phone } from '../entity/phone.entity';
+import { PhoneEntity } from '../entity/phone.entity';
 
 @Controller('phones')
 export class PhonesController {
@@ -13,12 +13,12 @@ export class PhonesController {
     }
 
     @Post()
-    create(@Body() phone: Phone) {
+    create(@Body() phone: PhoneEntity) {
         return this.service.createPhone(phone);
     }
 
     @Put()
-    update(@Body() phone: Phone) {
+    update(@Body() phone: PhoneEntity) {
         return this.service.updatePhone(phone);
     }
 

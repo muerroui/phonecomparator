@@ -1,10 +1,11 @@
 {
     "type": "mysql",
-    "host": "localhost",
+    "host": "mysql",
+    "logging": true,
     "port": 3306,
-    "username": "root",
-    "password": "root",
-    "database": "phonecomparator",
+    "username": "user",
+    "password": "password",
+    "database": "api",
     "entities": ["src/**/**.entity{.ts,.js}"],
     "synchronize": true
 }
