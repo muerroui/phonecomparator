@@ -1,4 +1,4 @@
-export const gsmarenaMapping = {
+export const GSMARENA_ATTRIBUTES_MAPPING = {
     'General Info' : {
         'Launched' : {
             field : 'Launch.Announced',

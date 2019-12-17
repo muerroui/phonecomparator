@@ -2,7 +2,7 @@
 import { Get, Controller, Render, Query, Param, NotFoundException, Res } from '@nestjs/common';
 import { PhoneController } from './phone.controller';
 import { AppController } from './app.controller';
-import {gsmarenaMapping} from './constants/gsmarenaMapping.constant';
+import {GSMARENA_ATTRIBUTES_MAPPING} from './constants/gsmarenaMapping.constant';
 import { get } from 'lodash';
 
 
@@ -33,11 +33,11 @@ export class CompareController {
         return await appController.root();
     }
     phones = phones.map(phone =>
-      Object.keys(gsmarenaMapping).reduce((object, mainMetric) =>
+      Object.keys(GSMARENA_ATTRIBUTES_MAPPING).reduce((object, mainMetric) =>
         Object.assign(object, {
-          [mainMetric]: Object.keys(gsmarenaMapping[mainMetric])
+          [mainMetric]: Object.keys(GSMARENA_ATTRIBUTES_MAPPING[mainMetric])
           .reduce((object, subMetric) => Object.assign(object,
-            {[subMetric]: (get(this.formatSpecs(phone.spec_detail), gsmarenaMapping[mainMetric][subMetric].field) || '_').replace(/[^\x00-\x7F]/g) })
+            {[subMetric]: (get(this.formatSpecs(phone.spec_detail), GSMARENA_ATTRIBUTES_MAPPING[mainMetric][subMetric].field) || '_').replace(/[^\x00-\x7F]/g) })
           ,{})
         }), {title: phone.title, img: phone.img, amazon: this.amazonUrl(phone.title)}));
     return {phones};
