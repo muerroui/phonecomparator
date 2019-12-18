@@ -4,10 +4,17 @@ import { PhoneController } from './phone.controller';
 import { AppController } from './app.controller';
 import {GSMARENA_ATTRIBUTES_MAPPING} from './constants/gsmarenaMapping.constant';
 import { get } from 'lodash';
+import { PhoneEntity } from './phone/entity/phone.entity';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { BrandService } from './phone/service/brand.service';
+import { PhoneService } from './phone/service/phone.service';
 
 
 @Controller('compare')
 export class CompareController {
+
+  constructor(private service: BrandService, private phoneService: PhoneService) { }
 
   @Get(':id')
   @Render('compare')
@@ -17,7 +24,7 @@ export class CompareController {
       res.render('custom/404', {Notfooter: true});
      // throw new NotFoundException(`Number of phones two compare must be at least two`);
     }
-    const phoneController = new PhoneController();
+    const phoneController = new PhoneController(this.service, this.phoneService);
     let phones = [];
     if (phoneIds[0]) {
      phones.push(await phoneController.phone(phoneIds[0] + '.php'));
@@ -28,7 +35,7 @@ export class CompareController {
     if (phoneIds[2]) {
       phones.push(await phoneController.phone(phoneIds[2] + '.php'));
     }
-    const appController = new AppController();
+    const appController = new AppController(this.service);
     if (phones.length === 0) {
         return await appController.root();
     }

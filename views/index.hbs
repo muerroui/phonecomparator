@@ -84,7 +84,7 @@
               <select class="form-control selectpicker brand" id="brandOne">
                 <option value="" selected="selected">--Brand-- </option>
                 {{#each brands}}
-                  <option value="{{this.url}}">{{this.name}}</option>
+                  <option value="{{this.id}}">{{this.data.name}}</option>
                 {{/each}}
               </select>
               <label>Select the Device:</label>
@@ -110,7 +110,7 @@
               <select class="form-control selectpicker brand" id="brandTwo">
                 <option value="" selected="selected">--Brand--</option>
                 {{#each brands}}
-                  <option value="{{this.url}}">{{this.name}}</option>
+                  <option value="{{this.id}}">{{this.data.name}}</option>
                 {{/each}}
               </select>
               <label>Select the Device:</label>
@@ -136,7 +136,7 @@
               <select class="form-control selectpicker brand" id="brandTree">
                 <option value="" selected="selected">--Brand--</option>
                 {{#each brands}}
-                  <option value="{{this.url}}">{{this.name}}</option>
+                  <option value="{{this.id}}">{{this.data.name}}</option>
                 {{/each}}
               </select>
               <label>Select the Device:</label>

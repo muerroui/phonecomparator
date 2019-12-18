@@ -1,11 +1,18 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { BrandEntity } from './brand.entity';
 
 @Entity()
 export class PhoneEntity {
 
     @PrimaryGeneratedColumn()
-    id: number;
+    id?: number;
 
-    @Column('text')
-    data: string;
+    @Column({unique: true})
+    name: string;
+
+    @Column({type: 'longtext'})
+    data: any;
+
+    @ManyToOne(type => BrandEntity, (brand) => brand.phones)
+    public brand: BrandEntity;
 }

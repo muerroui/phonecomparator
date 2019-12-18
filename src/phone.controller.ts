@@ -1,11 +1,20 @@
 import { Get, Controller, Render, Param, Query } from '@nestjs/common';
 import * as cheerio from 'cheerio';
 import * as request from 'request-promise-native';
+import { InjectRepository } from '@nestjs/typeorm';
+import { PhoneEntity } from './phone/entity/phone.entity';
+import { Repository } from 'typeorm';
+import { BrandService } from './phone/service/brand.service';
+import { PhoneService } from './phone/service/phone.service';
 
 const URI = 'https://www.gsmarena.com';
 
 @Controller('phone')
 export class PhoneController {
+  
+  constructor(private brandService: BrandService,
+              private phoneService: PhoneService) { }
+  
   @Get(':id')
   async findOne(@Param('id') id): Promise<any> {
     return await this.phone(id);
@@ -13,8 +22,12 @@ export class PhoneController {
 
   @Get()
   async getByBrand(@Query() query): Promise<any> {
-    console.log('query', query);
-    return await this.phonesOfBrand(query.brand);
+    //console.log(query.brand);
+    //const brand = await this.brandService.getBrand(query.brand);
+    //console.log('brand', brand.phones);
+    //console.log(await this.phoneService.getPhoneByBrand(brand));
+    console.log(await this.phoneService.getPhones());
+    //return await this.phoneService.getPhoneByBrand(brand);
   }
 
   async phone(phone) {
