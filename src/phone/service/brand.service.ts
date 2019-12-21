@@ -12,7 +12,8 @@ export class BrandService {
   ) {}
 
   async getBrands(): Promise<BrandEntity[]> {
-    return await this.brandsRepository.find(({ relations: ['phones'] }));
+    const brands = await this.brandsRepository.find(({ relations: ['phones'] }));
+    return brands.map(brand => { return {...brand, data: JSON.parse(brand.data)}});
   }
 
   async getBrand(id: number): Promise<BrandEntity> {

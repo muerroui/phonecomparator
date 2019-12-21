@@ -33,7 +33,6 @@ export class GsmarenaService {
         };
         try {
             const html = await request.get(options);
-            console.log('options', options);
             const $ = await cheerio.load(html);
             const json = [];
             const phones = $('.makers').find('li');
@@ -56,7 +55,7 @@ export class GsmarenaService {
               });
             return json;
         } catch (err) {
-            // console.log(err);
+            console.log('phones of brand', err);
             return [];
         }
     }
@@ -112,6 +111,7 @@ export class GsmarenaService {
           };
         return data;
       } catch (err) {
+        console.log('err', err);
         return null;
       }
     }

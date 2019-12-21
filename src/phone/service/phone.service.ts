@@ -19,7 +19,11 @@ export class PhoneService {
   }
 
   async getPhone(id: number): Promise<PhoneEntity> {
-    return await this.phonesRepository.findOne(id);
+    const phone = await this.phonesRepository.findOne(id);
+    return {
+      ...phone,
+      data: JSON.parse(phone.data)
+    }
   }
 
   async getPhoneByBrand(brand: BrandEntity): Promise<PhoneEntity []> {
@@ -29,10 +33,11 @@ export class PhoneService {
 
   async populatePhones(): Promise<void> {
     for (const brand of (await this.brandService.getBrands())) {
-      for ( let phone of (await this.gsmarenaService.getPhonesOfBrand(brand.data.url))) {
+      console.log('phone brand', brand);
+      for ( let phone of (await this.gsmarenaService.getPhonesOfBrand(JSON.parse(brand.data).url))) {
         phone = await this.gsmarenaService.getPhone(phone.url);
         if(phone) {
-          console.log('phone brand', phone);
+          console.log('phone brand -', phone);
           await this.createPhone({
             name: phone.title,
             data: JSON.stringify(phone),
@@ -52,7 +57,11 @@ export class PhoneService {
   }
 
   async getPhoneByName(name: string): Promise<BrandEntity> {
-    return await this.phonesRepository.findOne({name});
+    const phone = await this.phonesRepository.findOne({name});
+    return {
+      ...phone,
+      data: JSON.parse(phone.data)
+    };
   }
 
   async deletePhone(phone: PhoneEntity) {

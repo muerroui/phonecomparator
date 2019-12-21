@@ -14,7 +14,7 @@ export class PhoneController {
 
     @Get(':id')
     getById(@Param() params) {
-        return this.service.getPhone(params.id);
+        return this.service.getPhoneByName(params.id);
     }
 
 

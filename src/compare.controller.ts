@@ -24,20 +24,15 @@ export class CompareController {
       res.render('custom/404', {Notfooter: true});
      // throw new NotFoundException(`Number of phones two compare must be at least two`);
     }
-    const phoneController = new PhoneController(this.service, this.phoneService);
     let phones = [];
     if (phoneIds[0]) {
-     phones.push(await phoneController.phone(phoneIds[0] + '.php'));
+     phones.push((await this.phoneService.getPhoneByName(phoneIds[0])).data);
     }
     if (phoneIds[1]) {
-      phones.push(await phoneController.phone(phoneIds[1] + '.php'));
+      phones.push((await this.phoneService.getPhoneByName(phoneIds[1])).data);
     }
     if (phoneIds[2]) {
-      phones.push(await phoneController.phone(phoneIds[2] + '.php'));
-    }
-    const appController = new AppController(this.service);
-    if (phones.length === 0) {
-        return await appController.root();
+      phones.push((await this.phoneService.getPhoneByName(phoneIds[2])).data);
     }
     phones = phones.map(phone =>
       Object.keys(GSMARENA_ATTRIBUTES_MAPPING).reduce((object, mainMetric) =>

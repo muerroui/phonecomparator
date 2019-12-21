@@ -403,7 +403,7 @@
             success: function(devices) {
               var options = ["<option value='' selected='selected'>--Device--</option>"];
               devices.forEach(function(device) {
-                  options.push("<option value='" + device.url + "'>" + device.name + "</option>");
+                  options.push("<option value='" + device.name + "'>" + device.name + "</option>");
               });
               devicesSelect.html(options).removeAttr("disabled");
               devicesSelect.selectpicker('refresh');
@@ -437,11 +437,11 @@
           }
           deviceImg.attr("src", "img/loadingDevice.gif");
           $.ajax({
-            url: "/phone/" + $(this).val(),
+            url: "/phone/v2/" + $(this).val(),
             timeout: 5000,
             success: function(device) {
-              if (device.img) {
-                deviceImg.attr("src", device.img);
+              if (device.data.img) {
+                deviceImg.attr("src", device.data.img);
               } else {
                 deviceImg.attr("src", "img/device.png");
               }
@@ -477,7 +477,7 @@
             for (let [index, device] of devices.entries()) {
                 paramsStr += devices[index] + (index !== devices.length-1 ? "-vs-" : "");
             }
-            window.location.href =  "compare/" + paramsStr.replace(/.php/g, '');
+            window.location.href =  "compare/" + paramsStr.split(" ").join("%20");;
           }
         });
       }

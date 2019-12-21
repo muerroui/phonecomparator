@@ -10,7 +10,7 @@ export class PopulateController {
 
     @Post()
     async populate() {
-        await this.brandService.populateBrands();
+        //await this.brandService.populateBrands();
         await this.phoneService.populatePhones();
     }
 }

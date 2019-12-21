@@ -23,10 +23,10 @@ export class PhoneController {
   @Get()
   async getByBrand(@Query() query): Promise<any> {
     //console.log(query.brand);
-    //const brand = await this.brandService.getBrand(query.brand);
-    //console.log('brand', brand.phones);
+    const brand = await this.brandService.getBrand(query.brand);
+    return brand.phones;
     //console.log(await this.phoneService.getPhoneByBrand(brand));
-    console.log(await this.phoneService.getPhones());
+    //console.log(await this.phoneService.getPhones());
     //return await this.phoneService.getPhoneByBrand(brand);
   }
 
