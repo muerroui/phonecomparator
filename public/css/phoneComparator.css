@@ -722,3 +722,16 @@ a:focus, a:hover, a:active {
     font-size: 14px;
   }
 }
+
+.brand-list-section {
+  padding: 1rem 0;
+}
+
+.brand-list {
+  text-align: center;
+}
+
+.brand-list img {
+  width: 110px;
+  height: 80px;
+}
