@@ -20,6 +20,6 @@ services:
       - ./mysql:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: phonecomparator
+      MYSQL_DATABASE: api
       MYSQL_USER: user
       MYSQL_PASSWORD: password
