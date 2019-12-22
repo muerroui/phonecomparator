@@ -14,7 +14,7 @@ import { scraperModule } from './scraper/scraper.module';
     port: 3306,
     username: 'user',
     password: 'password',
-    database: 'api',
+    database: 'phonecomparator',
     //synchronize: true,
     entities: [__dirname + '/**/**/entity/**.entity{.ts,.js}'],
   }), PhoneModule, scraperModule],
