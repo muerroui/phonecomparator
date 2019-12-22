@@ -1,9 +1,9 @@
 FROM node:12.13.0
 
-RUN mkdir -p /api/
+RUN mkdir -p /phonecomparator/
 
-WORKDIR /api/
+WORKDIR /phonecomparator/
 
 EXPOSE 3000
 
-CMD npm run start:dev
+CMD npm run start:prod

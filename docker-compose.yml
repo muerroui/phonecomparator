@@ -2,12 +2,12 @@ version: '2'
 
 services:
 
-  api:
+  phonecomparator:
     build: .
     ports:
       - 3000:3000
     volumes:
-      - ".:/api"
+      - ".:/phonecomparator"
     depends_on:
       - mysql
 
@@ -20,6 +20,6 @@ services:
       - ./mysql:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: api
+      MYSQL_DATABASE: phonecomparator
       MYSQL_USER: user
       MYSQL_PASSWORD: password
